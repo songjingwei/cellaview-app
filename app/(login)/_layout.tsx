@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import Colors from "@/constants/Colors";
+import ConnectIp from "@/components/ConnectIp";
 
 export default function Layout() {
   return (
@@ -9,6 +10,7 @@ export default function Layout() {
         headerStyle: {
           backgroundColor: Colors.light.activeColor,
         },
+        headerRight: () => <ConnectIp />,
       }}
     >
       <Stack.Screen name="index" options={{ title: "登录" }} />

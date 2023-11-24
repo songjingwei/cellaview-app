@@ -56,9 +56,10 @@ export default function Login() {
   const login = () => {
     // 检查输入
     console.log("username: ", username);
+    console.log("password: ", password);
 
     // 如果正确，路由跳转
-    // router.push("/(tabs)");
+    router.push("/(tabs)");
   };
 
   return (
