@@ -15,6 +15,7 @@ export default function Layout() {
     >
       <Stack.Screen name="index" options={{ title: "登录" }} />
       <Stack.Screen name="two" options={{ title: "注册" }} />
+      <Stack.Screen name="three" options={{title: "连接仪器",  headerRight: undefined}}></Stack.Screen>
     </Stack>
   );
 }
