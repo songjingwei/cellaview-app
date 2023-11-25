@@ -32,7 +32,7 @@ export default function ConnectIpIcon({hasConnected}: ConnectIpIconProps) {
   const handlePress = () => {
     console.log("打开 ip 填写窗口");
     // setShowModal(true);
-    router.push("/(login)/three");
+    router.push("/(login)/connect");
 
   };
 

@@ -1,17 +1,17 @@
 import { Box, Spinner, VStack, Text } from "native-base";
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
 import delay from "@/utils/delay";
 import useBarCodeScannerPermissions from "@/hooks/useBarCodeScannerPermissions";
 import { usePersistStore } from "@/store";
+import { Camera } from "expo-camera";
 
 export default function Connect() {
   const setMachineIp = usePersistStore((state) => state.setMachineIp);
-
   const router = useRouter();
-  
+
   const hasPermission = useBarCodeScannerPermissions(BarCodeScanner);
 
   const [scanned, setScanned] = useState(false);
@@ -23,7 +23,7 @@ export default function Connect() {
     setMachineIp(data);
     router.back();
   }
-  
+
   if (hasPermission === null) {
     return <Text>请求相机权限...</Text>;
   }
@@ -32,11 +32,14 @@ export default function Connect() {
   }
 
   return (
-    <Box flex={1} backgroundColor="gray.300">
-      <BarCodeScanner
-        barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
+    <Box flex={1} backgroundColor="gray.500">
+      <Camera
+        barCodeScannerSettings={{
+          barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+        }}
         onBarCodeScanned={scanned ? undefined : handleScan}
-        style={StyleSheet.absoluteFill}
+        ratio="16:9"
+        style={StyleSheet.absoluteFillObject}
       />
 
       <Box justifyContent="center" alignItems="center" position="absolute" top={0} left={0} right={0} bottom={0} opacity={scanned ? 1 : 0}>
