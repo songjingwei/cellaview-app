@@ -59,7 +59,7 @@ export default function Login() {
     console.log("password: ", password);
 
     // 如果正确，路由跳转
-    router.push("/(tabs)");
+    router.replace("/(tabs)");
   };
 
   return (

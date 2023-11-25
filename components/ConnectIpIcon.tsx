@@ -16,7 +16,11 @@ import { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
-export default function ConnectIp() {
+interface ConnectIpIconProps {
+  hasConnected: boolean;
+}
+
+export default function ConnectIpIcon({hasConnected}: ConnectIpIconProps) {
   const _input: Partial<IInputProps> = {
     fontSize: 32,
     keyboardType: "numeric",
@@ -73,7 +77,7 @@ export default function ConnectIp() {
         borderRadius="full"
         _icon={{
           name: "connected-tv",
-          color: "dark.50",
+          color: hasConnected ? "green.500" : "red.500",
           size: "lg",
         }}
         _hover={{

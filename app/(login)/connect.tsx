@@ -5,8 +5,11 @@ import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import delay from "@/utils/delay";
 import useBarCodeScannerPermissions from "@/hooks/useBarCodeScannerPermissions";
+import { usePersistStore } from "@/store";
 
 export default function Connect() {
+  const setMachineIp = usePersistStore((state) => state.setMachineIp);
+
   const router = useRouter();
   
   const hasPermission = useBarCodeScannerPermissions(BarCodeScanner);
@@ -17,6 +20,7 @@ export default function Connect() {
     console.warn("开始扫描: ", type);
     await delay(1500);
     console.warn("二维码信息: ", data);
+    setMachineIp(data);
     router.back();
   }
   
