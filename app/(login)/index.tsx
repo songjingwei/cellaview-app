@@ -10,6 +10,8 @@ import {
   Icon,
   Pressable,
   Text,
+  Alert,
+  HStack,
 } from "native-base";
 import Colors from "@/constants/Colors";
 import { useState } from "react";
@@ -17,11 +19,13 @@ import { invalidObj } from "@/types/login";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import LoginManager from "@/apis/login";
-
-const cellaviewLogo = require("@/assets/images/cellaview_login_logo.png");
+import { usePersistStore } from "@/store";
 
 export default function Login() {
   const router = useRouter();
+
+  const machineIp = usePersistStore(state => state.machineIp);
+  console.warn("machineIp: ", machineIp);
 
   const [invalidUsername, setInvalidUsername] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
@@ -38,7 +42,6 @@ export default function Login() {
     if (username.length > 0) {
       setInvalidUsername(false);
     } else {
-      console.log();
       setInvalidUsername(true);
     }
   };
@@ -125,7 +128,7 @@ export default function Login() {
             <FormControl.ErrorMessage>密码必填</FormControl.ErrorMessage>
           </FormControl>
           <Box mt="6">
-            <Button size="lg" onPress={login}>
+            <Button size="lg" onPress={login} isDisabled={machineIp === null}>
               登录
             </Button>
             <Text
@@ -140,6 +143,21 @@ export default function Login() {
           </Box>
         </VStack>
       </Box>
+      {
+        !machineIp && (
+          <Alert w="85%" status="error" position="absolute" top="10">
+            <VStack space={2} flexShrink={1} w="100%">
+              <HStack space={2}>
+                <Alert.Icon mt="1" />
+                <Text fontSize="md" color="coolGray.800">
+                  您尚未连接机器，请点击右上角连接！
+                </Text>
+              </HStack>
+            </VStack>
+          </Alert>
+        )
+      }
+
     </Box>
   );
 }

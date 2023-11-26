@@ -20,7 +20,10 @@ interface ConnectIpIconProps {
   hasConnected: boolean;
 }
 
-export default function ConnectIpIcon({hasConnected}: ConnectIpIconProps) {
+import useAnimation from "./useAnimation";
+
+
+export default function ConnectIpIcon({ hasConnected }: ConnectIpIconProps) {
   const _input: Partial<IInputProps> = {
     fontSize: 32,
     keyboardType: "numeric",
@@ -33,8 +36,11 @@ export default function ConnectIpIcon({hasConnected}: ConnectIpIconProps) {
     console.log("打开 ip 填写窗口");
     // setShowModal(true);
     router.push("/(login)/connect");
-
   };
+
+  const { scaleStyles, AnimatedIcon } = useAnimation(hasConnected);
+
+
 
   // const [ip1, setIp1] = useState("");
   // const [ip2, setIp2] = useState("");
@@ -43,7 +49,7 @@ export default function ConnectIpIcon({hasConnected}: ConnectIpIconProps) {
   // const [loading, setLoading] = useState(false);
 
   // const toast = useToast();
-  
+
   // const connectIp = () => {
   //   setLoading(true);
   //   console.log("ip1: ", ip1, typeof ip1);
@@ -72,7 +78,7 @@ export default function ConnectIpIcon({hasConnected}: ConnectIpIconProps) {
 
   return (
     <>
-      <IconButton
+      <AnimatedIcon
         icon={<Icon as={<MaterialIcons />} />}
         borderRadius="full"
         _icon={{
@@ -87,6 +93,7 @@ export default function ConnectIpIcon({hasConnected}: ConnectIpIconProps) {
           bg: "dark.50:alpha.20",
         }}
         onPress={handlePress}
+        style={[scaleStyles]}
       />
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} size={"full"}>
         <Modal.Content w="100%" h="100%">
@@ -95,7 +102,7 @@ export default function ConnectIpIcon({hasConnected}: ConnectIpIconProps) {
             <Text fontSize="xl">连接仪器</Text>
           </Modal.Header>
           <Modal.Body backgroundColor={"red.300"}>
-           {/* <HStack justifyContent="center">
+            {/* <HStack justifyContent="center">
               <Input
                 w="22%"
                 _input={_input}
