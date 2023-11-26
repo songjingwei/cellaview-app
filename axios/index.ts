@@ -1,8 +1,11 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NODE_PORT, HARDWARE_PORT } from "@/constants/Ports";
+import { ResponseType } from '@/types';
 
-const axiosInstance = axios.create({});
+const axiosInstance = axios.create({
+  timeout: 6000,
+});
 
 axiosInstance.interceptors.request.use(async config => {
   const persistStoreStr = await AsyncStorage.getItem("cellaview-persist-store");
@@ -26,24 +29,28 @@ axiosInstance.interceptors.request.use(async config => {
 });
 
 axiosInstance.interceptors.response.use(response => {
-  // 添加响应拦截器
-  return response;
+  const res = response.data;
+  if (![200, 201].includes(res.code)) {
+    return Promise.reject(new Error(res.message || 'Error'));
+  } else {
+    return res;
+  }
 }, error => {
   // 处理响应错误
   return Promise.reject(error);
 });
 
-export const get = (url: string, params: Object) => {
+export const get = (url: string, params: Object): Promise<ResponseType> => {
   return axiosInstance.get(`:${NODE_PORT}` + url, { params });
 };
-export const post = (url: string, payload: Object) => {
+export const post = (url: string, payload: Object): Promise<ResponseType> => {
   return axiosInstance.post(`:${NODE_PORT}` + url, payload);
 };
 
-export const hardwareGet = (url: string, params: Object) => {
+export const hardwareGet = (url: string, params: Object): Promise<ResponseType> => {
   return axiosInstance.get(`:${HARDWARE_PORT}` + url, { params });
 }
-export const hardwarePost = (url: string, payload: Object) => {
+export const hardwarePost = (url: string, payload: Object): Promise<ResponseType> => {
   return axiosInstance.post(`:${HARDWARE_PORT}` + url, payload);
 };
 

@@ -1,8 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import {
   Box,
-  AspectRatio,
-  Image,
   VStack,
   Input,
   FormControl,
@@ -12,14 +10,16 @@ import {
   Text,
   Alert,
   HStack,
+  Toast,
+  NativeBaseProvider,
 } from "native-base";
 import Colors from "@/constants/Colors";
 import { useState } from "react";
-import { invalidObj } from "@/types/login";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import LoginManager from "@/apis/login";
 import { usePersistStore } from "@/store";
+import ToastAlert from "@/components/ToastAlert";
 
 export default function Login() {
   const router = useRouter();
@@ -57,22 +57,31 @@ export default function Login() {
     }
   };
 
+
   const login = async () => {
     // 检查输入
     console.log("username: ", username);
     console.log("password: ", password);
-
-    try {
-      const res = await LoginManager.login({ username: "haha", password: 'hehe' });
-      console.log("res: ", res);
-    } catch (err: any) {
-      // TODO 用 toast 通知用户
-      console.error(err.message);
+    // TODO 暂时写死
+    if (username === "admin" && password === "123") {
+      router.replace("/(tabs)");
     }
 
-
-    // 如果正确，路由跳转
-    // router.replace("/(tabs)");
+    try {
+      const res = await LoginManager.login({ username, password, });
+      console.log("res: ", res);
+      if (res.errCode !== 0) {
+        Toast.show({ title: res.errMsg });
+      } else {
+        router.replace("/(tabs)");
+      }
+    } catch (err: any) {
+      Toast.show({
+        placement: "top",
+        render: () => <ToastAlert status="error" variant="left-accent" title={err.message} />,
+        duration: 1500,
+      });
+    }
   };
 
   return (
@@ -80,7 +89,8 @@ export default function Login() {
       <Box style={styles.form}>
         <Box
           _text={{
-            fontSize: "4xl",
+            fontSize: "5xl",
+            fontWeight: 'extrabold',
             textAlign: "center",
             color: Colors.light.activeColor,
           }}
@@ -157,7 +167,6 @@ export default function Login() {
           </Alert>
         )
       }
-
     </Box>
   );
 }
