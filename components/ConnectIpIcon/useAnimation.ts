@@ -27,6 +27,7 @@ const useAnimation = (hasConnected: boolean) => {
   useEffect(() => {
     if (hasConnected) {
       cancelAnimation(scale);
+      scale.value = 1.0;
     }
   }, [hasConnected]);
 
