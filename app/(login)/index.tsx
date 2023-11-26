@@ -16,6 +16,7 @@ import { useState } from "react";
 import { invalidObj } from "@/types/login";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import LoginManager from "@/apis/login";
 
 const cellaviewLogo = require("@/assets/images/cellaview_login_logo.png");
 
@@ -53,13 +54,22 @@ export default function Login() {
     }
   };
 
-  const login = () => {
+  const login = async () => {
     // 检查输入
     console.log("username: ", username);
     console.log("password: ", password);
 
+    try {
+      const res = await LoginManager.login({ username: "haha", password: 'hehe' });
+      console.log("res: ", res);
+    } catch (err: any) {
+      // TODO 用 toast 通知用户
+      console.error(err.message);
+    }
+
+
     // 如果正确，路由跳转
-    router.replace("/(tabs)");
+    // router.replace("/(tabs)");
   };
 
   return (
