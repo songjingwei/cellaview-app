@@ -1,10 +1,19 @@
 import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
 import { Platform, StyleSheet } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
+import { usePersistStore } from "@/store";
 
 export default function ModalScreen() {
+  const removeMachineIp = usePersistStore((state) => state.removeMachineIp);
+  const removeToken = usePersistStore((state) => state.removeToken);
+  useEffect(() => {
+    removeMachineIp();
+    removeToken();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Modal</Text>

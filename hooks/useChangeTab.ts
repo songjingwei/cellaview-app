@@ -1,4 +1,4 @@
-import { useNavigation, useFocusEffect } from "expo-router";
+import { useNavigation, useFocusEffect, usePathname } from "expo-router";
 import { useEffect, useState } from "react";
 import { Audio } from "expo-av";
 import { Sound } from "expo-av/build/Audio";
@@ -21,16 +21,12 @@ async function playSound(
 }
 
 const useChangeTab = () => {
-  const navigation = useNavigation();
-  const [currentSound, setCurrentSound] = useState<Sound | null>(null);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("state", async () => {
-      // 在路由状态更改时执行逻辑
-      await playSound(currentSound, setCurrentSound);
-    });
-    return unsubscribe;
-  }, [navigation]);
+  // const navigation = useNavigation();
+  // const pathname = usePathname();
+  // const [currentSound, setCurrentSound] = useState<Sound | null>(null);
+  // useEffect(() => {
+  //   playSound(currentSound, setCurrentSound);
+  // }, [pathname]);
 };
 
 export default useChangeTab;

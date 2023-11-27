@@ -6,7 +6,7 @@ import Animated, {
   withRepeat,
   withTiming,
   cancelAnimation,
-} from 'react-native-reanimated';
+} from "react-native-reanimated";
 import { IconButton } from "native-base";
 
 const useAnimation = (hasConnected: boolean) => {
@@ -17,23 +17,21 @@ const useAnimation = (hasConnected: boolean) => {
   }));
 
   useEffect(() => {
-    scale.value = withRepeat(
-      withTiming(scale.value * 1.5, { duration: 1000 }),
-      -1,
-      true
-    );
-  }, []);
-
-  useEffect(() => {
     if (hasConnected) {
       cancelAnimation(scale);
       scale.value = 1.0;
+    } else {
+      scale.value = withRepeat(
+        withTiming(scale.value * 1.3, { duration: 1000 }),
+        -1,
+        true
+      );
     }
   }, [hasConnected]);
 
   const AnimatedIcon = Animated.createAnimatedComponent(IconButton);
 
   return { scaleStyles, AnimatedIcon };
-}
+};
 
 export default useAnimation;

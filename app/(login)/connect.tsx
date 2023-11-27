@@ -22,6 +22,7 @@ export default function Connect() {
     // 连接了新的机器，将之前的用户 token 清除
     setMachineIp(data);
     removeToken();
+    router.back();
   };
 
   if (hasPermission === null) {
