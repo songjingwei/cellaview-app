@@ -6,13 +6,13 @@ import { Text, View } from "../../components/Themed";
 export default function TabTwoScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>预设程序扫描</Text>
+      <Text style={styles.title}>自由模式</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
+      <EditScreenInfo path="app/(tabs)/freeView.tsx" />
     </View>
   );
 }

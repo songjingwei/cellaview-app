@@ -1,7 +1,6 @@
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link, Tabs } from "expo-router";
 import { Pressable, useColorScheme } from "react-native";
-import { useCheckToken } from "@/hooks";
 import Colors from "../../constants/Colors";
 
 /**
@@ -28,9 +27,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "自由模式",
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="presetScanning"
+        options={{
+          title: "预设程序扫描",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="telescope" color={color} />
+            <TabBarIcon name="line-scan" color={color} />
           ),
           headerRight: () => (
             <Link href="/modal" asChild>
@@ -49,16 +54,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="freeView"
         options={{
-          title: "预设程序扫描",
+          title: "自由模式",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="line-scan" color={color} />
+            <TabBarIcon name="telescope" color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="three"
+        name="dataScreen"
         options={{
           title: "数据总览",
           tabBarIcon: ({ color }) => (
@@ -67,7 +72,7 @@ export default function TabLayout() {
         }}
       ></Tabs.Screen>
       <Tabs.Screen
-        name="four"
+        name="systemSettings"
         options={{
           title: "系统设置",
           tabBarIcon: ({ color }) => (
