@@ -3,8 +3,8 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import { useState } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
-import delay from "@/utils/delay";
-import useBarCodeScannerPermissions from "@/hooks/useBarCodeScannerPermissions";
+import { delay } from "@/utils";
+import { useBarCodeScannerPermissions } from "@/hooks";
 import { usePersistStore } from "@/store";
 import { Camera } from "expo-camera";
 
