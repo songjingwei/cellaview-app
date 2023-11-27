@@ -9,6 +9,8 @@ import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { NativeBaseProvider } from "native-base";
+import { RootSiblingParent } from "react-native-root-siblings";
+import { useCheckToken } from "@/hooks";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -49,15 +51,18 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  useCheckToken();
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <NativeBaseProvider>
-        <Stack>
-          <Stack.Screen name="(login)" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-        </Stack>
+        <RootSiblingParent>
+          <Stack>
+            <Stack.Screen name="(login)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+          </Stack>
+        </RootSiblingParent>
       </NativeBaseProvider>
     </ThemeProvider>
   );

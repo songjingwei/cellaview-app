@@ -22,7 +22,6 @@ interface ConnectIpIconProps {
 
 import useAnimation from "./useAnimation";
 
-
 export default function ConnectIpIcon({ hasConnected }: ConnectIpIconProps) {
   const _input: Partial<IInputProps> = {
     fontSize: 32,
@@ -33,14 +32,11 @@ export default function ConnectIpIcon({ hasConnected }: ConnectIpIconProps) {
 
   const router = useRouter();
   const handlePress = () => {
-    console.log("打开 ip 填写窗口");
     // setShowModal(true);
     router.push("/(login)/connect");
   };
 
   const { scaleStyles, AnimatedIcon } = useAnimation(hasConnected);
-
-
 
   // const [ip1, setIp1] = useState("");
   // const [ip2, setIp2] = useState("");
@@ -95,7 +91,11 @@ export default function ConnectIpIcon({ hasConnected }: ConnectIpIconProps) {
         onPress={handlePress}
         style={[scaleStyles]}
       />
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size={"full"}>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        size={"full"}
+      >
         <Modal.Content w="100%" h="100%">
           <Modal.CloseButton />
           <Modal.Header>

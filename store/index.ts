@@ -1,5 +1,4 @@
 import usePersistStore from "./persist";
+import useUserStore from "./user";
 
-export {
-  usePersistStore,
-}
+export { usePersistStore, useUserStore };

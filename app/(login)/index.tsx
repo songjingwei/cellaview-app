@@ -10,7 +10,6 @@ import {
   Text,
   Alert,
   HStack,
-  Toast,
   NativeBaseProvider,
 } from "native-base";
 import Colors from "@/constants/Colors";
@@ -18,14 +17,16 @@ import { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import LoginManager from "@/apis/login";
-import { usePersistStore } from "@/store";
-import ToastAlert from "@/components/ToastAlert";
+import { usePersistStore, useUserStore } from "@/store";
+import * as Crypto from "expo-crypto";
+import Toast from "react-native-root-toast";
 
 export default function Login() {
   const router = useRouter();
 
-  const machineIp = usePersistStore(state => state.machineIp);
-  console.warn("machineIp: ", machineIp);
+  const machineIp = usePersistStore((state) => state.machineIp);
+  const setToken = usePersistStore((state) => state.setToken);
+  const setUserInfo = useUserStore((state) => state.setUserInfo);
 
   const [invalidUsername, setInvalidUsername] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
@@ -57,30 +58,32 @@ export default function Login() {
     }
   };
 
-
   const login = async () => {
     // 检查输入
-    console.log("username: ", username);
-    console.log("password: ", password);
-    // TODO 暂时写死
-    if (username === "admin" && password === "123") {
-      router.replace("/(tabs)");
-    }
+    const digestPassword = await Crypto.digestStringAsync(
+      Crypto.CryptoDigestAlgorithm.SHA1,
+      username + password
+    );
 
     try {
-      const res = await LoginManager.login({ username, password, });
-      console.log("res: ", res);
-      if (res.errCode !== 0) {
-        Toast.show({ title: res.errMsg });
-      } else {
-        router.replace("/(tabs)");
-      }
-    } catch (err: any) {
-      Toast.show({
-        placement: "top",
-        render: () => <ToastAlert status="error" variant="left-accent" title={err.message} />,
-        duration: 1500,
+      const res = await LoginManager.login({
+        userName: username,
+        password: digestPassword,
       });
+      if (res.errCode !== 0) {
+        Toast.show(res.errMsg, {
+          position: 58,
+          shadow: true,
+          backgroundColor: "red",
+        });
+      } else {
+        // 写入用户信息至全局状态
+        setUserInfo(res.body);
+        // token 持久化
+        setToken(res.body.token);
+      }
+    } catch (err) {
+      console.log("err----: ", err);
     }
   };
 
@@ -90,7 +93,7 @@ export default function Login() {
         <Box
           _text={{
             fontSize: "5xl",
-            fontWeight: 'extrabold',
+            fontWeight: "extrabold",
             textAlign: "center",
             color: Colors.light.activeColor,
           }}
@@ -138,7 +141,13 @@ export default function Login() {
             <FormControl.ErrorMessage>密码必填</FormControl.ErrorMessage>
           </FormControl>
           <Box mt="6">
-            <Button size="lg" onPress={login} isDisabled={machineIp === null}>
+            <Button
+              size="lg"
+              onPress={login}
+              isDisabled={
+                machineIp === null || invalidUsername || invalidPassword
+              }
+            >
               登录
             </Button>
             <Text
@@ -153,20 +162,18 @@ export default function Login() {
           </Box>
         </VStack>
       </Box>
-      {
-        !machineIp && (
-          <Alert w="85%" status="error" position="absolute" top="10">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack space={2}>
-                <Alert.Icon mt="1" />
-                <Text fontSize="md" color="coolGray.800">
-                  您尚未连接机器，请点击右上角连接！
-                </Text>
-              </HStack>
-            </VStack>
-          </Alert>
-        )
-      }
+      {!machineIp && (
+        <Alert w="85%" status="error" position="absolute" top="10">
+          <VStack space={2} flexShrink={1} w="100%">
+            <HStack space={2}>
+              <Alert.Icon mt="1" />
+              <Text fontSize="md" color="coolGray.800">
+                您尚未连接机器，请点击右上角连接！
+              </Text>
+            </HStack>
+          </VStack>
+        </Alert>
+      )}
     </Box>
   );
 }
