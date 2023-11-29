@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import {
   Box,
   VStack,
@@ -7,26 +7,25 @@ import {
   Button,
   Icon,
   Pressable,
-  Text,
   Alert,
   HStack,
-  NativeBaseProvider,
+  Text,
 } from "native-base";
 import Colors from "@/constants/Colors";
 import { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import LoginManager from "@/apis/login";
-import { usePersistStore, useUserStore } from "@/store";
+import { usePersistStore } from "@/store";
 import * as Crypto from "expo-crypto";
-import Toast from "react-native-root-toast";
+import myToast from "@/components/Toast";
 
 export default function Login() {
   const router = useRouter();
 
   const machineIp = usePersistStore((state) => state.machineIp);
   const setToken = usePersistStore((state) => state.setToken);
-  const setUserInfo = useUserStore((state) => state.setUserInfo);
+  const setUserInfo = usePersistStore((state) => state.setUserInfo);
 
   const [invalidUsername, setInvalidUsername] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
@@ -71,19 +70,15 @@ export default function Login() {
         password: digestPassword,
       });
       if (res.errCode !== 0) {
-        Toast.show(res.errMsg, {
-          position: 58,
-          shadow: true,
-          backgroundColor: "red",
-        });
+        myToast.error(res.errMsg);
       } else {
-        // 写入用户信息至全局状态
+        // userInfo 持久化
         setUserInfo(res.body);
         // token 持久化
         setToken(res.body.token);
       }
     } catch (err) {
-      console.log("err----: ", err);
+      myToast.error(err as string);
     }
   };
 

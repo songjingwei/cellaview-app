@@ -9,9 +9,11 @@ import { usePersistStore } from "@/store";
 export default function ModalScreen() {
   const removeMachineIp = usePersistStore((state) => state.removeMachineIp);
   const removeToken = usePersistStore((state) => state.removeToken);
+  const removeUserInfo = usePersistStore((state) => state.removeUserInfo);
   useEffect(() => {
     removeMachineIp();
     removeToken();
+    removeUserInfo();
   }, []);
 
   return (

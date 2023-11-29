@@ -17,8 +17,10 @@ axiosInstance.interceptors.request.use(
     }
     const persistStore = JSON.parse(persistStoreStr as string);
     const machineIp = persistStore.state.machineIp;
+    const token = persistStore.state.token;
     // 通过 machineIp  确认请求的 ip 地址
     config.url = `http://${machineIp}` + config.url;
+    config.headers["Authorization"] = `Bearer ${token}`;
 
     // 添加请求拦截器
     if (config.method === "post") {
