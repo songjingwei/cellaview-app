@@ -27,7 +27,11 @@ const DeleteDialog = ({
     >
       <AlertDialog.Content>
         <AlertDialog.CloseButton />
-        <AlertDialog.Header>{title}</AlertDialog.Header>
+        <AlertDialog.Header>
+          <MyText fontWeight="extrabold" fontSize={20}>
+            {title}
+          </MyText>
+        </AlertDialog.Header>
         <AlertDialog.Body>
           <MyText fontSize={16}>{desc}</MyText>
         </AlertDialog.Body>
