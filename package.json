@@ -42,7 +42,8 @@
     "react-native-svg": "13.9.0",
     "react-native-web": "~0.19.6",
     "zustand": "^4.4.6",
-    "expo-av": "~13.4.1"
+    "expo-av": "~13.4.1",
+    "expo-haptics": "~12.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

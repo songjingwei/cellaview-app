@@ -1,11 +1,16 @@
 import { post } from "@/axios";
 
-const getExpTemplatesByUserId = async (payload: Object) => {
+export const getExpTemplatesByUserId = async (payload: Object) => {
   return post("/v1/experiment/getExperimentTemplateByUserId", payload);
+};
+
+export const deleteExpTemplateById = async (payload: Object) => {
+  return post("/v1/experiment/deleteExperimentTemplateById", payload);
 };
 
 const expTemplateManager = {
   getExpTemplatesByUserId,
+  deleteExpTemplateById,
 };
 
 export default expTemplateManager;
