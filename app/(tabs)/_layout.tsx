@@ -33,7 +33,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="presetScanning"
+        name="(presetScanning)"
         options={{
           title: "预设程序扫描",
           tabBarIcon: ({ color }) => (

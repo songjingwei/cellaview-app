@@ -7,8 +7,10 @@ import { useRef, useState } from "react";
 import { DeleteDialog } from "@/components/presetScanning";
 import expTemplateManager from "@/apis/expTemplate";
 import myToast from "@/components/Toast";
+import { useRouter } from "expo-router";
 
 export default function TabOneScreen() {
+  const router = useRouter();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const { templates, refreshing, fetchExpTemplates } = useGetTemplates();
@@ -40,6 +42,14 @@ export default function TabOneScreen() {
   const handlePress = (index: number | null) => {
     // TODO
     setSelectedIndex(index);
+    if (typeof index === "number") {
+      router.push({
+        pathname: "./experimentInfo",
+        params: {
+          currentTemplateStr: JSON.stringify(templates[index]),
+        },
+      });
+    }
   };
 
   // 长按弹出删除 dialog
